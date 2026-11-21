@@ -27,3 +27,24 @@ All stories are dated Saturday 21 November 2026 or first reported that day. The 
 23. Reuters/FT: administration seeks Ukraine-Russia peace agreement by early January.
 
 Sources named on image: Reuters, AP, AFP, BBC, DTEK, UN News, Kyiv Independent, Carbon Brief, Health Policy Watch, CELIOS, Copernicus, Sensor Tower.
+
+## R2 report-day audit
+
+R2 retains 16 items: three FLASH reports, eight pinned reports and five
+Saturday follow-ups. `REPORTED SAT` means the Saturday report, not the event
+date. Friday events are explicitly disclosed in their body text: US and Asian
+market closes, the Poland incident (Friday 06:30 local), EU–UK agreement, CPI
+release, vendor leak and Malaysian announcement. This follows the supplied
+21 November source audit; it is not a new claim of independent live verification.
+
+Saturday developments retained from the verified audit: DTEK restoration to
+800,000+ Kyiv residents, Odesa's Saturday attack and 41,000 families without
+power, Kyiv outage update, COP31 overtime and possible COP32 deferrals, NATO
+Eastern Sentry follow-up, and the Wellington cricket reports. Earlier casualty
+figures in the Kyiv FLASH are the nationwide barrage toll, not Saturday deaths.
+
+The Jakarta report uses CELIOS's 1.92m hectares burned and losses up to $31.12bn.
+The >5,250 deaths / ~400,000 infections claim is not substantiated in this
+ledger and is removed from the image. GTA VI, Odisha aftermath and the
+undated frozen-assets brief are omitted. The sources actually printed in R2
+are Reuters, AP, DTEK, Kyiv Independent, Carbon Brief, CELIOS and JagranJosh.

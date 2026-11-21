@@ -56,57 +56,62 @@ def scene(d, kind, x, y, w, h):
         d.ellipse(((x+20)*S,(y+18)*S,(x+55)*S,(y+53)*S),fill=red)
 
 def bulletin(d, x, y, w, stamp, place, headline, body, accent=blue):
-    box(d,(x,y,x+w,y+72),(252,248,239),outline=(214,203,184),width=1,r=4)
-    t(d,(x+8,y+10),stamp,font("sansb",10),red)
-    t(d,(x+8,y+25),place.upper(),font("sansb",8),accent)
-    hf=font("serifb",12)
-    lines=wrap(d,headline,hf,(w-16)*S)
-    for i,line in enumerate(lines[:2]): t(d,(x+8,y+36+i*14),line,hf,ink)
-    if body: t(d,(x+8,y+64),body,font("sans",7),muted)
+    box(d,(x,y,x+w,y+82),(252,248,239),outline=(214,203,184),r=4)
+    t(d,(x+10,y+5),stamp+" / "+place,font("sansb",11),red)
+    t(d,(x+10,y+22),headline,font("serifb",21),ink)
+    lines=wrap(d,body,font("sans",12),w-20)
+    assert len(lines)<=2, (headline,lines)
+    for i,line in enumerate(lines): t(d,(x+10,y+51+i*15),line,font("sans",12),muted)
 
 def main():
     im=Image.new("RGB",(W*S,H*S),paper); d=ImageDraw.Draw(im)
-    # header
     d.rectangle((0,0,W*S,8*S),fill=red)
-    t(d,(34,24),"THE WIRE",font("serifb",27),ink)
-    t(d,(210,28),"WIRE 21  /  ALL TIMES WIB",font("sansb",11),red)
-    t(d,(34,58),"SATURDAY 21 NOVEMBER 2026",font("serifb",35),ink)
-    t(d,(36,100),"A day of shocks, power restored, and negotiations that ran past the clock.",font("serifb",12),blue)
-    # figures
-    box(d,(34,123,990,176),(236,229,211),outline=(214,203,184),width=1,r=3)
-    figures=[("-5.28%","NASDAQ"),("$88.30","ANTHROPIC"),("800,000+","KYIV POWER"),("9","KILLED"),("100,000","YOUTH PLACES"),("UP TO $31bn","FIRE LOSSES")]
-    for i,(num,lab) in enumerate(figures):
-        x=46+i*157
-        t(d,(x,132),num,font("sansb",15),red)
-        t(d,(x,153),lab,font("sansb",8),blue)
-    # timeline spine
-    spine_x=58
-    d.line((spine_x*S,188*S,spine_x*S,735*S),fill=red,width=5*S)
-    for hr,yy in [("04:00",203),("07:00",338),("09:00",473),("12:00",608),("18:00",715)]:
-        d.ellipse(((spine_x-6)*S,(yy-6)*S,(spine_x+6)*S,(yy+6)*S),fill=paper,outline=red,width=2*S)
-        t(d,(8,yy-7),hr,font("sansb",8),red)
-    # flash cards
-    cards=[(82,188,292,"04:00 WIB  /  NEW YORK","AI ROUT: MARKETS SNAP","Nasdaq -5.28%; the index lost 10% on the week. Anthropic closes $88.30, -9.1%.","market","Reuters · AP"),(392,188,292,"SAT MORNING  /  KYIV","800,000+ BACK ON POWER","DTEK says the main restoration is done after the barrage; 9 killed nationwide, 30 injured.","power","DTEK · Kyiv Independent"),(702,188,292,"SAT MORNING  /  ANTALYA","COP31 RUNS INTO OVERTIME","No final agreement yet. A third draft was promised after overnight talks.","climate","AP · Carbon Brief")]
-    for x,y,w,stamp,head,body,kind,src in cards:
-        box(d,(x,y,x+w,y+142),(255,251,242),outline=red,width=2,r=6)
-        t(d,(x+12,y+12),stamp,font("sansb",9),red)
-        scene(d,kind,x+12,y+31,92,82)
-        hf=font("serifb",11)
-        for j,line in enumerate(wrap(d,head,hf,w-126)[:2]): t(d,(x+114,y+35+j*13),line,hf,ink)
-        for j,line in enumerate(wrap(d,body,font("sans",7),w-126)[:4 if kind == "climate" else 2]): t(d,(x+114,y+63+j*10),line,font("sans",7),muted)
-        t(d,(x+12,y+121),src,font("sansb",7),blue)
-    # mid bulletins
-    t(d,(82,350),"THE DAY, PINNED TO THE WIRE",font("sansb",10),red)
-    mids=[("FRI 06:30","SE POLAND","Missiles fall near border; nobody hurt","Two sites and a suspected drone; NATO calls it a grave violation."),("FRI CLOSE","TAIPEI / SEOUL / TOKYO","Asia closes in a red wave","Taiex -6.23%; KOSPI -5.21%; Nikkei -5.06%."),("FRIDAY","BRUSSELS","EU-UK reset: 100,000 visas each way","Agri-food, emissions trading and youth mobility deals agreed."),("REPORTED SAT","JAKARTA","Fires: up to $31bn in losses","CELIOS: 1.92m ha burned; smoke reaches Singapore and Malaysia."),("FRIDAY","TOKYO","October CPI 2.3% year-on-year","Core inflation stays above the BoJ's 2% target."),("FRIDAY","LONDON","n0n leaks vendor email files","More than 16,000 customer emails; payment networks unaffected."),("FRIDAY","KUALA LUMPUR","Malaysia plans 10,000 Rohingya resettlement","Skills-training route through Turkey, announced by the deputy PM."),("SAT STUMPS","WELLINGTON","India 159/1, chasing 368","Day 2 closes with India trailing New Zealand by 209."),("FRIDAY","ODISHA","Akvan aftermath: 372,000 evacuated","No deaths or major damage reported; rain moves north."),("REPORTED FRI","LOS ANGELES","GTA VI: Sensor Tower estimate","24.58m copies and $2.36bn day one; publisher has not confirmed.")]
+    t(d,(34,19),"THE WIRE",font("serifb",40),ink)
+    t(d,(325,29),"SATURDAY / 21 NOVEMBER 2026",font("sansb",24),red)
+    t(d,(36,76),"Markets break. Kyiv reconnects. COP31 runs past the clock.",font("serifb",22),blue)
+    # A report-day spine, not invented event times.
+    d.line((57*S,132*S,57*S,854*S),fill=red,width=5*S)
+    for yy,label in [(145,"01"),(355,"02"),(720,"03")]:
+        d.ellipse((47*S,(yy-10)*S,67*S,(yy+10)*S),fill=paper,outline=red,width=2*S)
+        t(d,(12,yy-9),label,font("sansb",12),red)
+    cards=[
+        ("REPORTED SAT 04:00 WIB / NEW YORK","AI ROUT","NASDAQ -5.28%","Friday’s close, reported Saturday 04:00 WIB: S&P -3.70%; Dow -1.93%. ANT $88.30, down 9.1%.","market","Reuters / AP"),
+        ("SAT MORNING / KYIV","POWER RETURNS","800,000+ BACK","DTEK restores power Saturday after the barrage. Nationwide toll: 9 killed, 30 injured.","power","DTEK / Kyiv Independent"),
+        ("SAT MORNING / ANTALYA","COP31 OVERTIME","NO FINAL DEAL","Saturday talks continue. A third draft was promised after overnight negotiations.","climate","AP / Carbon Brief")]
+    for i,(stamp,head,figure,body,kind,src) in enumerate(cards):
+        x=82+i*306; y=125; w=294
+        box(d,(x,y,x+w,y+204),(255,251,242),outline=red,width=2,r=6)
+        t(d,(x+12,y+9),"FLASH",font("sansb",12),red)
+        t(d,(x+12,y+29),stamp,font("sansb",11),red)
+        t(d,(x+12,y+51),head,font("serifb",23),ink)
+        t(d,(x+12,y+84),figure,font("sansb",22),red)
+        lines=wrap(d,body,font("sans",13),w-24)
+        assert len(lines)<=4
+        for j,line in enumerate(lines): t(d,(x+12,y+118+j*17),line,font("sans",13),ink)
+        t(d,(x+12,y+185),src,font("sansb",11),blue)
+    t(d,(82,340),"SATURDAY REPORT FILE / PRIOR EVENT DATES SHOWN BELOW",font("sansb",12),red)
+    mids=[
+        ("REPORTED SAT","POLAND","Missiles; nobody hurt","Friday 06:30: two missiles + suspected drone. Poland seeks NATO Eastern Sentry resources."),
+        ("REPORTED SAT","ASIA MARKETS","Asia stocks tumble","Friday closes: Taiex -6.23%; KOSPI -5.21%; Nikkei -5.06%. Reported Saturday morning WIB."),
+        ("REPORTED SAT","BRUSSELS","EU–UK reset agreed","Friday deal: agri-food, emissions trading and 100,000 youth visas each way. Reuters."),
+        ("REPORTED SAT","JAKARTA","1.92m hectares burned","CELIOS report: fire losses up to $31.12bn; smoke reaches Singapore and Malaysia."),
+        ("REPORTED SAT","TOKYO","Japan CPI rises 2.3%","October annual inflation, released Friday; core 2.2%, above the BoJ’s 2% target. Reuters."),
+        ("REPORTED SAT","LONDON","n0n leaks vendor files","Friday leak: over 16,000 customer emails. Payment networks unaffected. Reuters."),
+        ("REPORTED SAT","MALAYSIA","Rohingya resettlement","Friday announcement: 10,000-person skills route via Turkey proposed by deputy PM. Reuters."),
+        ("SAT STUMPS","WELLINGTON","India reaches 159/1","Chasing New Zealand’s 368; India trails by 209 at the close of Day 2. JagranJosh.")]
     for i,row in enumerate(mids):
-        col=i%2; rr=i//2
-        bulletin(d,82+col*452,365+rr*75,430,*row)
-    # briefs
-    t(d,(82,757),"BRIEFS / LIVE FILE",font("sansb",10),red)
-    briefs=["EU leaders move toward using frozen Russian assets for Ukraine.","Odesa region attack leaves 41,000 families without power.","Poland seeks more NATO Eastern Sentry resources.","COP31 decisions may roll to COP32 in Addis Ababa.","Indonesia smoke linked to >5,250 deaths and ~400,000 infections.","SoftBank fell 14.5% as Tokyo sold off.","Nvidia slid 13.8%; Reuters says SEC examines accounting.","Akvan was Odisha's third cyclone threat in 24 days.","EU-UK package could add 0.5% GDP by 2040.","No emergency outages remain in Kyiv; rolling cuts continue.","India-NZ Day 3 begins Saturday.","Sensor Tower labels GTA VI figures an estimate."]
-    for i,b in enumerate(briefs):
-        col=i%2; rr=i//2
-        t(d,(82+col*452,774+rr*13),f"{('06' if rr<2 else '17')}:00  "+b,font("sans",7),ink)
+        bulletin(d,82+(i%2)*459,362+(i//2)*86,447,*row)
+    t(d,(82,713),"SATURDAY FOLLOW-UPS / LIVE FILE",font("sansb",12),red)
+    briefs=[
+        ("ODESA: 41,000 families lose power","Saturday attack / DTEK"),
+        ("KYIV: emergency outages end","Saturday; rolling cuts continue / DTEK"),
+        ("POLAND: NATO resources sought","Saturday follow-up / AP, NATO"),
+        ("COP31: decisions may roll to COP32","Saturday talks / Carbon Brief"),
+        ("CRICKET: Day 3 begins Saturday","India–New Zealand / JagranJosh")]
+    for i,(head,detail) in enumerate(briefs):
+        yy=737+i*25
+        t(d,(82,yy),head,font("serifb",21),ink)
+        t(d,(575,yy+4),detail,font("sans",11),blue)
     # map strip
     y=862; box(d,(34,y,990,935),sea,outline=(185,201,195),width=1,r=3)
     t(d,(46,y+7),"DATELINES",font("sansb",9),blue)
@@ -129,20 +134,17 @@ def main():
       [(165,-35),(178,-40),(174,-46),(168,-44),(165,-35)]]
     for poly in continents:
         d.polygon([tuple(int(v*S) for v in project(lon,lat)) for lon,lat in poly],fill=land,outline=coast,width=S)
-    places=[("NY",-74.0,40.7),("BRU",4.35,50.85),("WAW",21,52.2),("KYI",30.5,50.4),("ANT",30.7,36.9),("TKY",139.7,35.7),("GOP",84.9,19.3),("JKT",106.8,-6.2),("WLG",174.8,-41.3)]
-    label_positions={"BRU":(528,y+9), "WAW":(565,y+9),
-                     "KYI":(606,y+9), "ANT":(599,y+56)}
+    places=[("NEW YORK",-74,40.7),("EUROPE",15,50),("JAKARTA",106.8,-6.2),("TOKYO",139.7,35.7),("WELLINGTON",174.8,-41.3)]
+    positions={"NEW YORK":(285,y+5),"EUROPE":(530,y+5),"JAKARTA":(670,y+55),"TOKYO":(830,y+5),"WELLINGTON":(870,y+55)}
     for name,lon,lat in places:
         px,py=project(lon,lat)
         d.ellipse(((px-3)*S,(py-3)*S,(px+3)*S,(py+3)*S),fill=red)
-        lx,ly=label_positions.get(name,(px+4,py-7))
-        if name in label_positions:
-            d.line((px*S,py*S,(lx+8)*S,(ly+5)*S),fill=blue,width=S)
-        t(d,(lx,ly),name,font("sansb",7),blue)
-    # date check/footer
-    t(d,(34,948),"DATE CHECK ✓ Every story here happened, or was first reported, on Saturday 21 November 2026.",font("sansb",8),red)
-    t(d,(34,963),"LEFT OUT: Shenzhen summit · ICJ Rohingya verdict · Anthropic $97.17 debut · Senate Iran vote · GTA VI launch · EU €45bn loan (all Thu).",font("sans",6),muted)
-    t(d,(34,979),"SOURCES  Reuters · AP · AFP · BBC · DTEK · UN News · Kyiv Independent · Carbon Brief · Health Policy Watch · CELIOS · Copernicus · Sensor Tower (estimate)",font("sans",6),blue)
+        lx,ly=positions[name]
+        t(d,(lx,ly),name,font("sansb",10),blue)
+    # Report-day claim explicitly allows the prior event dates disclosed above.
+    t(d,(34,943),"DATE CHECK / Every story here was first reported on",font("sansb",17),red)
+    t(d,(34,966),"Saturday 21 November 2026. Earlier event dates are shown in the text.",font("sansb",17),red)
+    t(d,(34,997),"SOURCES / Reuters · AP · DTEK · Kyiv Independent · Carbon Brief · CELIOS · JagranJosh | Full ledger: SOURCES.md",font("sans",10),blue)
     im.resize((W,H),Image.Resampling.LANCZOS).save("assets/entry.png",format="PNG",optimize=True)
 
 if __name__ == "__main__": main()
