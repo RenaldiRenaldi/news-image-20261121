@@ -86,14 +86,14 @@ def main():
         d.ellipse(((spine_x-6)*S,(yy-6)*S,(spine_x+6)*S,(yy+6)*S),fill=paper,outline=red,width=2*S)
         t(d,(8,yy-7),hr,font("sansb",8),red)
     # flash cards
-    cards=[(82,188,292,"04:00 WIB  /  NEW YORK","AI ROUT: MARKETS SNAP","Nasdaq -5.28%; the index lost 10% on the week. Anthropic closes $88.30, -9.1%.","market","Reuters · AP"),(392,188,292,"SAT MORNING  /  KYIV","800,000+ BACK ON POWER","DTEK says the main restoration is done after the barrage; 9 killed nationwide, 30 injured.","power","DTEK · Kyiv Independent"),(702,188,292,"SAT MORNING  /  ANTALYA","COP31 RUNS INTO OVERTIME","No final agreement yet. A third draft was promised after overnight talks; fossil-fuel language remains out.","climate","AP · Carbon Brief")]
+    cards=[(82,188,292,"04:00 WIB  /  NEW YORK","AI ROUT: MARKETS SNAP","Nasdaq -5.28%; the index lost 10% on the week. Anthropic closes $88.30, -9.1%.","market","Reuters · AP"),(392,188,292,"SAT MORNING  /  KYIV","800,000+ BACK ON POWER","DTEK says the main restoration is done after the barrage; 9 killed nationwide, 30 injured.","power","DTEK · Kyiv Independent"),(702,188,292,"SAT MORNING  /  ANTALYA","COP31 RUNS INTO OVERTIME","No final agreement yet. A third draft was promised after overnight talks.","climate","AP · Carbon Brief")]
     for x,y,w,stamp,head,body,kind,src in cards:
         box(d,(x,y,x+w,y+142),(255,251,242),outline=red,width=2,r=6)
         t(d,(x+12,y+12),stamp,font("sansb",9),red)
         scene(d,kind,x+12,y+31,92,82)
         hf=font("serifb",11)
         for j,line in enumerate(wrap(d,head,hf,w-126)[:2]): t(d,(x+114,y+35+j*13),line,hf,ink)
-        for j,line in enumerate(wrap(d,body,font("sans",7),w-126)[:2]): t(d,(x+114,y+63+j*10),line,font("sans",7),muted)
+        for j,line in enumerate(wrap(d,body,font("sans",7),w-126)[:4 if kind == "climate" else 2]): t(d,(x+114,y+63+j*10),line,font("sans",7),muted)
         t(d,(x+12,y+121),src,font("sansb",7),blue)
     # mid bulletins
     t(d,(82,350),"THE DAY, PINNED TO THE WIRE",font("sansb",10),red)
@@ -113,12 +113,13 @@ def main():
     # Hand-drawn equirectangular outline, cropped to the populated latitudes.
     map_left,map_right=112,965
     def project(lon,lat):
-        return (map_left+(lon+180)*(map_right-map_left)/360, y+26+(60-lat)*34/120)
+        return (map_left+(lon+180)*(map_right-map_left)/360, y+18+(75-lat)*48/135)
     for lon in [-120,-60,0,60,120]:
         gx,_=project(lon,0); d.line((gx*S,(y+25)*S,gx*S,(y+62)*S),fill=(190,205,201),width=1*S)
     for lat in [0,30,60]:
         _,gy=project(0,lat); d.line((map_left*S,gy*S,map_right*S,gy*S),fill=(190,205,201),width=1*S)
-    land=(193,211,202)
+    land=(129,157,145)
+    coast=(67,103,94)
     continents=[[( -168,60),(-150,70),(-130,68),(-120,55),(-105,50),(-95,48),(-82,25),(-98,15),(-110,25),(-120,32),(-130,50),(-150,55),(-168,60)],
       [(-80,12),(-68,10),(-50,-2),(-48,-18),(-58,-35),(-70,-55),(-78,-35),(-82,-10),(-80,12)],
       [(-10,35),(-10,55),(5,60),(25,70),(45,60),(35,45),(25,35),(10,36),(-10,35)],
@@ -127,12 +128,17 @@ def main():
       [(112,-12),(130,-10),(145,-20),(150,-35),(135,-42),(115,-30),(112,-12)],
       [(165,-35),(178,-40),(174,-46),(168,-44),(165,-35)]]
     for poly in continents:
-        d.line([tuple(int(v*S) for v in project(lon,lat)) for lon,lat in poly],fill=land,width=5*S,joint="curve")
+        d.polygon([tuple(int(v*S) for v in project(lon,lat)) for lon,lat in poly],fill=land,outline=coast,width=S)
     places=[("NY",-74.0,40.7),("BRU",4.35,50.85),("WAW",21,52.2),("KYI",30.5,50.4),("ANT",30.7,36.9),("TKY",139.7,35.7),("GOP",84.9,19.3),("JKT",106.8,-6.2),("WLG",174.8,-41.3)]
+    label_positions={"BRU":(528,y+9), "WAW":(565,y+9),
+                     "KYI":(606,y+9), "ANT":(599,y+56)}
     for name,lon,lat in places:
         px,py=project(lon,lat)
         d.ellipse(((px-3)*S,(py-3)*S,(px+3)*S,(py+3)*S),fill=red)
-        t(d,(px+4,py-7),name,font("sansb",6),blue)
+        lx,ly=label_positions.get(name,(px+4,py-7))
+        if name in label_positions:
+            d.line((px*S,py*S,(lx+8)*S,(ly+5)*S),fill=blue,width=S)
+        t(d,(lx,ly),name,font("sansb",7),blue)
     # date check/footer
     t(d,(34,948),"DATE CHECK ✓ Every story here happened, or was first reported, on Saturday 21 November 2026.",font("sansb",8),red)
     t(d,(34,963),"LEFT OUT: Shenzhen summit · ICJ Rohingya verdict · Anthropic $97.17 debut · Senate Iran vote · GTA VI launch · EU €45bn loan (all Thu).",font("sans",6),muted)
