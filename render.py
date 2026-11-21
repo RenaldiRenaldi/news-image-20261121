@@ -97,7 +97,7 @@ def main():
         ("REPORTED SAT","JAKARTA","1.92m hectares burned","CELIOS report: fire losses up to $31.12bn; smoke reaches Singapore and Malaysia."),
         ("REPORTED SAT","TOKYO","Japan CPI rises 2.3%","October annual inflation, released Friday; core 2.2%, above the BoJ’s 2% target. Reuters."),
         ("REPORTED SAT","LONDON","n0n leaks vendor files","Friday leak: over 16,000 customer emails. Payment networks unaffected. Reuters."),
-        ("REPORTED SAT","MALAYSIA","Rohingya resettlement","Friday announcement: 10,000-person skills route via Turkey proposed by deputy PM. Reuters."),
+        ("REPORTED SAT","MALAYSIA","Rohingya resettlement","Friday announcement: 10,000-person skills route via Turkey proposed. Reuters."),
         ("SAT STUMPS","WELLINGTON","India reaches 159/1","Chasing New Zealand’s 368; India trails by 209 at the close of Day 2. JagranJosh.")]
     for i,row in enumerate(mids):
         bulletin(d,82+(i%2)*459,362+(i//2)*86,447,*row)
@@ -107,11 +107,16 @@ def main():
         ("KYIV: emergency outages end","Saturday; rolling cuts continue / DTEK"),
         ("POLAND: NATO resources sought","Saturday follow-up / AP, NATO"),
         ("COP31: decisions may roll to COP32","Saturday talks / Carbon Brief"),
-        ("CRICKET: Day 3 begins Saturday","India–New Zealand / JagranJosh")]
+        ("CRICKET: Day 3 begins Saturday","India–New Zealand / JagranJosh"),
+        ("ODESA: regional grid repairs begin","Saturday attack aftermath / DTEK"),
+        ("KYIV: 800,000+ restored, cuts remain","Saturday power update / DTEK"),
+        ("POLAND: Eastern Sentry request logged","Saturday security follow-up / NATO"),
+        ("COP31: overnight draft moves to ministers","Saturday negotiation file / AP")]
     for i,(head,detail) in enumerate(briefs):
-        yy=737+i*25
-        t(d,(82,yy),head,font("serifb",21),ink)
-        t(d,(575,yy+4),detail,font("sans",11),blue)
+        col=i%2; row=i//2
+        xx=82+col*459; yy=730+row*26
+        t(d,(xx,yy),head,font("serifb",16),ink)
+        t(d,(xx,yy+16),detail,font("sans",9),blue)
     # map strip
     y=862; box(d,(34,y,990,935),sea,outline=(185,201,195),width=1,r=3)
     t(d,(46,y+7),"DATELINES",font("sansb",9),blue)

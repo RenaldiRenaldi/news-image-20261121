@@ -25,6 +25,10 @@ All stories are dated Saturday 21 November 2026 or first reported that day. The 
 21. JagranJosh: India 159/1 at stumps, NZ 368, Wellington Test.
 22. The Watchers/Hindu BusinessLine: Akvan, 372,000 evacuated, no deaths or major damage.
 23. Reuters/FT: administration seeks Ukraine-Russia peace agreement by early January.
+24. DTEK regional report: Saturday Odesa grid repairs begin after the attack that cut power to 41,000 families.
+25. DTEK/AP: Saturday Kyiv update confirms 800,000+ restored while rolling cuts continue.
+26. NATO/AP: Poland's Saturday follow-up seeks Eastern Sentry resources after the airspace incident.
+27. AP/Carbon Brief: Saturday COP31 overnight draft moves to ministers as negotiations continue.
 
 Sources named on image: Reuters, AP, AFP, BBC, DTEK, UN News, Kyiv Independent, Carbon Brief, Health Policy Watch, CELIOS, Copernicus, Sensor Tower.
 
